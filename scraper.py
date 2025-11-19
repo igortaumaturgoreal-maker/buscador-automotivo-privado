@@ -62,3 +62,12 @@ def buscar_portais():
                 print(f"Erro ao buscar {modelo}: {e}")
 
     return pd.DataFrame(resultados)
+{
+  "version": 2,
+  "builds": [
+    { "src": "main.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "main.py" }
+  ]
+}
