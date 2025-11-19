@@ -1,1 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buscador Automotivo - Oportunidades</title>
+  <style>
+    body{background:#0b0b0d;color:#eee;font-family:Inter,Arial;padding:24px;}
+    h1{color:#7CFFB2}
+    button{background:#16A34A;color:#fff;border:none;padding:12px 18px;border-radius:8px;cursor:pointer}
+    .card{background:#111;padding:12px;border-radius:8px;margin:10px 0;border:1px solid #222}
+    .kv{color:#9aa;font-size:13px}
+  </style>
+</head>
+<body>
+  <h1>Buscador Automotivo — Particulares (margem ≥ R$12k)</h1>
+  <p>Modelos: Honda, Toyota, Fiat Strada (cab. simples), Hyundai Creta / HB20.</p>
+  <div>
+    <button id="btn">Buscar agora</button>
+    <span id="status" style="margin-left:12px">Pronto</span>
+  </div>
+  <div id="results"></div>
 
+  <script>
+    const btn = document.getElementById('btn');
+    const status = document.getElementById('status');
+    const results = document.getElementById('results');
+
+    async function runScan(){
+      status.textContent = 'Buscando...';
+      results.innerHTML = '';
+      try{
+        const r = await fetch('/scan');
+        const j = await r.json();
+        status.textContent = Encontrados ${j.count} oportunidades;
+        if(j.count === 0){ results.innerHTML = '<p class="kv">Nenhuma oportunidade no momento.</p>'; return }
+        j.results.forEach(it => {
+          const d = document.createElement('div');
+          d.className = 'card';
+          d.innerHTML = `<div><strong>${it.brand} ${it.model}</strong> — <a href="${it.url}" target="_blank">Ver anúncio</a></div>
+                         <div class="kv">Preço: R$ ${Number(it.price).toLocaleString()} • FIPE: R$ ${Number(it.fipe).toLocaleString()} • Margem: R$ ${Number(it.margin).toLocaleString()}</div>
+                         <div class="kv">Fonte: ${it.source} • Coletado: ${it.scraped_at}</div>
+                         <div style="margin-top:8px">${it.title || ''}</div>`;
+          results.appendChild(d);
+        });
+      }catch(e){
+        status.textContent = 'Erro: ' + e.message;
+      }
+    }
+
+    btn.addEventListener('click', runScan);
+  </script>
+</body>
+</html>
