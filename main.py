@@ -1,13 +1,10 @@
-from fastapi import FastAPI
-import scraper
+from flask import Flask, render_template
 
-app = FastAPI()
+app = Flask(_name_)
 
-@app.get("/")
-def root():
-    return {"status": "online", "mensagem": "Monitor de oportunidades ativo!"}
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-@app.get("/scan")
-def scan():
-    df = scraper.buscar_portais()
-    return df.to_dict(orient="records")
+if _name_ == "_main_":
+    app.run()
