@@ -1,0 +1,9 @@
+buscador-automotivo-privado/
+├── main.py
+├── requirements.txt
+├── vercel.json
+├── fipe.py
+├── scraper.py
+├── notifier.py
+└── templates/
+    └── index.html
