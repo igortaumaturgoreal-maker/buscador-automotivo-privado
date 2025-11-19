@@ -1,7 +1,4 @@
+flask
 requests
 beautifulsoup4
-pandas
 lxml
-schedule
-fastapi
-uvicorn
